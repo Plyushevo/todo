@@ -1,0 +1,185 @@
+html {
+  padding: 0;
+}
+
+body {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-image: url("../imgs/Dettifoss-East-or-West-Side\ \(1\).jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 370px;
+  min-width: 100vh;
+  padding-top: 75px;
+}
+
+.wrapper {
+  margin: auto;
+  max-width: 550px;
+}
+
+h1 {
+  color: #FFF;
+  font-family: Roboto, sans-serif;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 8.32px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.upper {
+  margin-top: -150px;
+}
+
+#form_todo,
+.todoItemForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  background-color: #FFF;
+  border-radius: 10px;
+  min-height: 65px;
+  min-width: 550px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+}
+
+#form__submit_button,
+.todoItem__submit_button {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  outline: 1px solid #D1D1D1;
+}
+
+#form__submit_button:hover,
+.todoItem__submit_button:hover {
+  cursor: pointer;
+  outline: none;
+  background-image: url("../imgs/ico/Ok\ icon.svg")
+}
+
+#form__submit_button:active {
+  transform: translateY(2px);
+  transition: translateY .1s;
+}
+
+textarea, input { outline: none; }
+
+#form__delete_button,
+.todoItem__delete_button {
+  height: 27px;
+  width: 27px;
+  background-image: url("../imgs/ico/Close\ icon.svg");
+  background-size: cover;
+}
+
+#form__delete_button:hover,
+.todoItem__delete_button:hover {
+  cursor:pointer;
+  transform: scale(1.1);
+  transition: all .5s;
+}
+
+#form__delete_button:active,
+.todoItem__delete_button:active {
+  transform: translateY(2px);
+  transition: translateY .1s;
+}
+
+#form__input_todo,
+.todoItem-text {
+  min-width: 30vh;
+  height: 30px;
+  border-style: none;
+  border-bottom: 1px solid #E5E5E5;
+  padding: 0 10px;
+  color: #000;
+
+  font-family: Roboto;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+/* todo list items */
+
+#todo_ul_list {
+  margin-top: 20px;
+}
+
+.todoItem-text {
+  min-width: 296px;
+}
+
+#form__input_todo:hover {
+  /* transform: scale(1.02); */
+}
+
+
+
+/* footer */
+
+.ul_list__footer {
+  display: flex;
+  height: 55px;
+  background-color:#FFF;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: #808080
+}
+
+.footer__center {
+  display: flex;
+  gap: 10px;
+
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.footer_position {
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+#all:hover,
+#active:hover,
+#completed:hover,
+#clear_completed:hover {
+  cursor: pointer;
+  color: #000;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+#all:active,
+#active:active,
+#completed:active,
+#clear_completed:active {
+  transform: translateY(2px);
+  transition: translateY .1s;
+}
+
+
+.todoItemForm {
+
+}
