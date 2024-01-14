@@ -1,0 +1,9 @@
+<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Ok icon" d="M26.5818 13.9792C26.5818 20.5878 21.0194 26.0056 14.0818 26.0056C7.14433 26.0056 1.58185 20.5878 1.58185 13.9792C1.58185 7.37059 7.14433 1.95284 14.0818 1.95284C21.0194 1.95284 26.5818 7.37059 26.5818 13.9792Z" fill="white" stroke="url(#paint0_linear_1584_50)" stroke-width="2"/>
+<defs>
+<linearGradient id="paint0_linear_1584_50" x1="4.45095" y1="4.66665" x2="21.9572" y2="23.7513" gradientUnits="userSpaceOnUse">
+<stop offset="0.15" stop-color="#8DD198"/>
+<stop offset="1" stop-color="#829DD0"/>
+</linearGradient>
+</defs>
+</svg>

@@ -24,6 +24,10 @@ header {
   padding-top: 75px;
 }
 
+.hidden {
+  display: none;
+}
+
 .wrapper {
   margin: auto;
   max-width: 550px;
@@ -67,14 +71,20 @@ h1 {
   outline: 1px solid #D1D1D1;
 }
 
-#form__submit_button:hover,
-.todoItem__submit_button:hover {
+#form__submit_button:hover {
   cursor: pointer;
   outline: none;
   background-image: url("../imgs/ico/Ok\ icon.svg")
 }
 
-#form__submit_button:active {
+.todoItem__submit_button:hover {
+  cursor: pointer;
+  outline: none;
+  background-image: url("../imgs/ico/Ok_hover_icon.svg")
+}
+
+#form__submit_button:active,
+.todoItem__submit_button:active {
   transform: translateY(2px);
   transition: translateY .1s;
 }
@@ -104,12 +114,13 @@ textarea, input { outline: none; }
 
 #form__input_todo,
 .todoItem-text {
+  
   min-width: 30vh;
   height: 30px;
   border-style: none;
   border-bottom: 1px solid #E5E5E5;
   padding: 0 10px;
-  color: #000;
+  color: inherit;
 
   font-family: Roboto;
   font-size: 24px;
@@ -183,3 +194,20 @@ textarea, input { outline: none; }
 .todoItemForm {
 
 }
+
+.completed {
+  text-decoration: line-through;
+  color: #D5D0CC;
+}
+
+.completed-btn {
+  background-image: url("../imgs/ico/Ok\ icon.svg");
+  outline:none;
+  border: none;
+}
+
+.completed-btn:hover {
+  background-image: url('../imgs/ico/Ok\ icon.svg');
+  transform: scale(0.95)
+}
+

@@ -14,12 +14,14 @@
   </header>
   <section class="todo_section upper">
     <div class="wrapper">
-      <form id="form_todo" action="">
-        <div id="form__submit_button" onclick="addTodo()"></div>
+      <form id="form_todo" action=""
+      onsubmit="return false">
+        <div id="form__submit_button"></div>
         <input 
         placeholder="Enter a task here"
         id="form__input_todo" 
-        type="text">
+        type="text"
+        autofocus>
         <div id="form__delete_button"></div>
       </form>
       <div class="ul_list__form">
