@@ -1,104 +1,214 @@
-document.addEventListener('DOMContentLoaded', function () {
-  //button that adds a new task
-  const addBtn = document.getElementById("form__submit_button")
-  // input
-  const userInput = document.getElementById("form__input_todo")
-  //ul where we put li
-  const todoList = document.getElementById('todo_ul_list')
-  // array of existing tasks from local storage
-  let list = JSON.parse(localStorage.getItem("todoList"))
+//consts
+const addBtn = document.getElementById("form__submit_button")
+const userInput = document.getElementById("form__input_todo")
+const todoList = document.getElementById('todo_ul_list')
+const footerCenter = document.querySelector('.footer__center')
+const clearCompletedBtn = document.getElementById("clear_completed")
+const clearFormBtn = document.getElementById("form__delete_button")
 
-  // if array is'n empty - create a todo list from it
-  if (list) {
+//eventlisteners
+addBtn.addEventListener('click', addTodo)
+userInput.addEventListener('keypress', addTodoOnEnter)
+document.addEventListener('DOMContentLoaded', buildTodoOnLoad);
+footerCenter.addEventListener('click', handleFilterClick)
+clearCompletedBtn.addEventListener('click', deleteCompleted)
+clearFormBtn.addEventListener('click', clearForm)
+
+// functions
+function buildTodoOnLoad () {
+  let list = JSON.parse(localStorage.getItem("todoList"))
+  if (list && list.length !== 0) {
     list.forEach(element => {
       todoText = element;
       const todoItem = createTodoItem(todoText);
       todoList.appendChild(todoItem)
 
     });
-  // if empty - or undefined - create a new
   } else {
+    hideFooter()
     list = [];
-  }
-
-  //eventlisteners
-
-  addBtn.addEventListener('click', addTodo)
-  userInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      addTodo()
-    }
-  })
-
-
-  // functions
-
-
-  function addTodo() {
-    todoText = userInput.value.trim()
-    if (todoText === ''){
-      return
-    }
-    const todoItem = createTodoItem(todoText);
-    todoList.appendChild(todoItem)
-    pushToLocalstorage(todoText)
-    userInput.value = ""
-  }
-  
-  function pushToLocalstorage (todoText) {
-    list.push(todoText)
-    localStorage.setItem("todoList", JSON.stringify(list))
-  }
-
-
-  function createTodoItem(todoText) {
-    const todoItem = document.createElement('li');
-    todoItem.innerHTML = `
-      <div class="todoItemForm">
-        <div class="todoItem__submit_button"></div>
-        <span class="todoItem-text">${todoText}</span>
-        <div class="todoItem__delete_button"></div>
-      </div>
-    `
-    // look for just added del button 
-    const deleteBtn = todoItem.querySelector(".todoItem__delete_button")
-    // add an event listener to delete button
-    deleteBtn.addEventListener('click', deleteTask)
-
-    const endBtn = todoItem.querySelector(".todoItem__submit_button")
-
-    endBtn.addEventListener('click', endTask)
-
-    return todoItem
-  }
-
-  function endTask(e) {
-    const item = e.target;
-    const todo = item.parentElement;
-    const submitBtn = todo.querySelector('.todoItem__submit_button')
-    todo.classList.toggle('completed')
-    submitBtn.classList.toggle('completed-btn');
-  }
-
-  function deleteTask(e) {
-    const item = e.target;
-    const todo = item.parentElement;
-    const todoTextElement = todo.querySelector('.todoItem-text')
-    todoText = todoTextElement.innerText;
-    deleteTaskFromLocalstorage(todoText)
-    todo.remove()
     
   }
+}
 
-  function deleteTaskFromLocalstorage (todoText) {
-    const list = JSON.parse(localStorage.getItem("todoList"))
-    const index = list.indexOf(todoText)
+function hideFooter() {
+  document.querySelector(".ul_list__footer").classList.add("hidden")
+}
+function showFooter() {
+  document.querySelector(".ul_list__footer").classList.remove("hidden")
+}
 
-    if (index !== -1) {
-      list.splice(index, 1)
+function addTodo() {
+  todoText = userInput.value.trim()
+  if (todoText === ''){
+    return
+  }
+  const todoItem = createTodoItem(todoText);
+  todoList.appendChild(todoItem)
+  pushToLocalstorage(todoText)
+  userInput.value = ""
+  showFooter()
+  counterChange()
+}
+
+function createTodoItem(todoText) {
+  const todoItem = document.createElement('li');
+  todoItem.innerHTML = `
+    <div class="todoItemForm">
+      <div class="todoItem__submit_button"></div>
+      <span class="todoItem-text">${todoText}</span>
+      <div class="todoItem__delete_button"></div>
+    </div>
+  `
+  const deleteBtn = todoItem.querySelector(".todoItem__delete_button")
+  deleteBtn.addEventListener('click', deleteTask)
+  const endBtn = todoItem.querySelector(".todoItem__submit_button")
+  endBtn.addEventListener('click', endTask)
+  return todoItem
+}
+
+function endTask(e) {
+  const item = e.target;
+  const todo = item.parentElement;
+  const submitBtn = todo.querySelector('.todoItem__submit_button')
+  todo.classList.toggle('completed')
+  submitBtn.classList.toggle('completed-btn');
+  counterChange()
+}
+
+function counterChange() {
+  try {
+    const storage = JSON.parse(localStorage.getItem("todoList"));
+    let active = document.querySelectorAll(".completed")
+    let counter = storage.length - active.length
+    let counterElement = document.getElementById("todo__counter");
+    if (counter < 0) {
+      return
+    } else if (counter === 1){
+      counterElement.innerText = `${counter} task left`
+    } else {
+      counterElement.innerText = `${counter} tasks left`
     }
-    localStorage.setItem("todoList", JSON.stringify(list))
+  } catch (e) {
+    return
   }
 
+}
 
-});
+function deleteTodoDiv(todo) {
+  const todoTextElement = todo.querySelector('.todoItem-text')
+  todoText = todoTextElement.innerText;
+  deleteTaskFromLocalstorage(todoText)
+  todo.classList.add("fade")
+  console.log(todo)
+  setTimeout(() => {
+    todo.remove();
+  }, 2000);
+  const storage = JSON.parse(localStorage.getItem("todoList"));
+  if (storage.length === 0) {
+    localStorage.clear()
+    hideFooter()
+  }
+  counterChange()
+}
+
+function deleteTask(e) {
+  const item = e.target;
+  const todo = item.parentElement;
+  deleteTodoDiv(todo)
+}
+
+function pushToLocalstorage (todoText) {
+  let storage = JSON.parse(localStorage.getItem("todoList"))
+  if (!storage) {
+    storage = []
+  }
+  storage.push(todoText)
+  localStorage.setItem("todoList", JSON.stringify(storage))
+}
+
+function deleteTaskFromLocalstorage (todoText) {
+  let storage = JSON.parse(localStorage.getItem("todoList")) || [];
+  let index = storage.indexOf(todoText)
+  if (index !== -1) {
+    storage.splice(index, 1)
+  }
+  localStorage.setItem("todoList", JSON.stringify(storage))
+}
+
+function showCompleted() {
+  changeFontColor(document.getElementById("completed"))
+  const todos = document.querySelectorAll(".todoItemForm")
+
+  todos.forEach(todo => {
+    const isCompleted = todo.classList.contains("completed")
+    todo.classList.toggle("hidden", !isCompleted)
+  })
+}
+
+function showAll() {
+  changeFontColor(document.getElementById("all"))
+  const todos = document.querySelectorAll(".todoItemForm")
+  todos.forEach(todo => {
+      todo.classList.remove("hidden")
+  })
+}
+
+function showActive() {
+  changeFontColor(document.getElementById("active"))
+  const todos = document.querySelectorAll(".todoItemForm")
+  todos.forEach(todo => {
+    if(todo.classList.contains("completed")) {
+      todo.classList.add("hidden")
+    } else {
+      todo.classList.remove("hidden")
+    }
+  })
+}
+
+function changeFontColor(currentFilter) {
+  const filters = document.querySelectorAll('.footer__center div')
+  filters.forEach(filter => {
+
+    filter.classList.remove("currentFilterFont");
+  });
+
+  // Добавим класс выбранному фильтру
+  currentFilter.classList.add("currentFilterFont");
+}
+
+function addTodoOnEnter (e) {
+  if (e.key === 'Enter') {
+    addTodo()
+  }
+}
+
+function deleteCompleted() {
+  completedTodos = document.querySelectorAll(".completed");
+  completedTodos.forEach(todo => {
+    deleteTodoDiv(todo)
+  })
+}
+
+function handleFilterClick (e) {
+  const clickedFilter = e.target;
+  if (clickedFilter.tagName === 'DIV') {
+    changeFontColor(clickedFilter)
+    const filterType = clickedFilter.id
+    switch(filterType) {
+      case "all":
+        showAll();
+        break
+      case 'active':
+        showActive();
+        break
+      case "completed":
+        showCompleted()
+        break;
+    }
+  }
+}
+
+function clearForm () {
+  document.getElementById("form__input_todo").value = ""
+}
