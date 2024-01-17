@@ -103,7 +103,7 @@ function deleteTodoDiv(todo) {
   console.log(todo)
   setTimeout(() => {
     todo.remove();
-  }, 2000);
+  }, 1000);
   const storage = JSON.parse(localStorage.getItem("todoList"));
   if (storage.length === 0) {
     localStorage.clear()
