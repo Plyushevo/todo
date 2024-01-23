@@ -6,6 +6,12 @@ const footerCenter = document.querySelector('.footer__center')
 const clearCompletedBtn = document.getElementById("clear_completed")
 const clearFormBtn = document.getElementById("form__delete_button")
 
+// Objects
+
+function Task(text, completed) {
+  this.completed = false;
+}
+
 //eventlisteners
 addBtn.addEventListener('click', addTodo)
 userInput.addEventListener('keypress', addTodoOnEnter)
@@ -39,10 +45,12 @@ function showFooter() {
 }
 
 function addTodo() {
+  
   todoText = userInput.value.trim()
   if (todoText === ''){
     return
   }
+  let task = new Task(todoText)
   const todoItem = createTodoItem(todoText);
   todoList.appendChild(todoItem)
   pushToLocalstorage(todoText)
