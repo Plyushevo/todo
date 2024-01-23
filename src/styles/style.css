@@ -189,10 +189,6 @@ textarea, input { outline: none; }
 }
 
 
-.todoItemForm {
-
-}
-
 .completed {
   text-decoration: line-through;
   color: #D5D0CC;
@@ -224,17 +220,30 @@ textarea, input { outline: none; }
   opacity: 0;
   transition: visibility 0s 0.5s, opacity 0.5s ease;
   animation: collapse 1.01s ease;
-  /* animation-fill-mode: forwards; */
   
+}
+
+.show {
+  transition: visibility 0s 0.5s, opacity 0.5s ease;
+  animation: appear 1s ease;
+
 }
 
 @keyframes collapse {
   0% {
 		margin-top: 0;
-    /* left: 0; */
   }
 
   100% {
 	  margin-top: -65px;
+  }
+}
+
+@keyframes appear {
+  0% {
+		opacity: 0;
+  }
+  100% {
+	  opacity: 1;
   }
 }

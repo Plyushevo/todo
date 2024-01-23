@@ -56,14 +56,18 @@ function createTodoItem(todoText) {
   todoItem.innerHTML = `
     <div class="todoItemForm">
       <div class="todoItem__submit_button"></div>
-      <span class="todoItem-text">${todoText}</span>
+      <span contentEditable="true" class="todoItem-text">${todoText}</span>
       <div class="todoItem__delete_button"></div>
     </div>
   `
+  const todoForm = todoItem.querySelector(".todoItemForm")
+  todoForm.classList.add("show")
   const deleteBtn = todoItem.querySelector(".todoItem__delete_button")
   deleteBtn.addEventListener('click', deleteTask)
   const endBtn = todoItem.querySelector(".todoItem__submit_button")
   endBtn.addEventListener('click', endTask)
+  const todoItemText = todoItem.querySelector(".todoItem-text")
+  todoItemText.addEventListener('input', )
   return todoItem
 }
 
@@ -99,6 +103,7 @@ function deleteTodoDiv(todo) {
   const todoTextElement = todo.querySelector('.todoItem-text')
   todoText = todoTextElement.innerText;
   deleteTaskFromLocalstorage(todoText)
+  todo.classList.remove("show")
   todo.classList.add("fade")
   console.log(todo)
   setTimeout(() => {
@@ -124,6 +129,15 @@ function pushToLocalstorage (todoText) {
     storage = []
   }
   storage.push(todoText)
+  localStorage.setItem("todoList", JSON.stringify(storage))
+}
+
+function editTaskInLocalstorage (todoText) {
+  let storage = JSON.parse(localStorage.getItem("todoList")) || [];
+  let index = storage.indexOf(todoText)
+  // if (index !== -1) {
+  //   storage[i] = 
+  // }
   localStorage.setItem("todoList", JSON.stringify(storage))
 }
 
