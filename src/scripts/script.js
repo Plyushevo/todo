@@ -27,8 +27,10 @@ function buildTodoOnLoad () {
   if (list && list.length !== 0) {
     list.forEach(element => {
       let todoText = element.text;
-      const task = new Task(todoText)
-      const todoItem = createTodoItem(task);
+      let completeStatus = element.completed
+      console.log(element)
+      const task = new Task(todoText, completeStatus)
+      const todoItem = createTodoItem(element);
       todoList.appendChild(todoItem)
 
     });
@@ -72,10 +74,15 @@ function createTodoItem(task) {
   `
   const todoForm = todoItem.querySelector(".todoItemForm")
   todoForm.classList.add("show")
+  if (task.completed) {
+    todoForm.classList.add("completed")
+    const submitBtn = todoItem.querySelector('.todoItem__submit_button');
+    submitBtn.classList.add('completed-btn');
+  }
   const deleteBtn = todoItem.querySelector(".todoItem__delete_button")
   deleteBtn.addEventListener('click', deleteTask)
   const endBtn = todoItem.querySelector(".todoItem__submit_button")
-  endBtn.addEventListener('click', endTask)
+  endBtn.addEventListener('click', completeTask)
   const todoItemText = todoItem.querySelector(".todoItem-text")
   // todoItemText.addEventListener('input', )
   return todoItem
@@ -92,13 +99,30 @@ function pushToLocalstorage (task) {
   console.log(storage)
 }
 
-function endTask(e) {
+function completeTask(e) {
   const item = e.target;
   const todo = item.parentElement;
-  const submitBtn = todo.querySelector('.todoItem__submit_button')
-  todo.classList.toggle('completed')
-  submitBtn.classList.toggle('completed-btn');
-  counterChange()
+  const todoTextElement = todo.querySelector(".todoItem-text")
+  if (todoTextElement) {
+    const todoText = todoTextElement.innerText.trim();
+    
+    // Find the corresponding task object in local storage
+    const storage = JSON.parse(localStorage.getItem("todoList")) || [];
+    const task = storage.find(item => item.text === todoText);
+    if (task) {
+      // Update the completed status in the task object
+      task.completed = !task.completed;
+      // Update local storage
+      localStorage.setItem("todoList", JSON.stringify(storage));
+      // Toggle completed class for visual styling
+      todo.classList.toggle('completed');
+      const submitBtn = todo.querySelector('.todoItem__submit_button');
+      submitBtn.classList.toggle('completed-btn');
+      console.log(storage)
+      // Update the counter and perform any other necessary actions
+      counterChange();
+    }
+  }
 }
 
 function counterChange() {
