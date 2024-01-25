@@ -79,12 +79,22 @@ function createTodoItem(task) {
     const submitBtn = todoItem.querySelector('.todoItem__submit_button');
     submitBtn.classList.add('completed-btn');
   }
+  //delete task listener
   const deleteBtn = todoItem.querySelector(".todoItem__delete_button")
   deleteBtn.addEventListener('click', deleteTask)
+  //complete task listener
   const endBtn = todoItem.querySelector(".todoItem__submit_button")
   endBtn.addEventListener('click', completeTask)
+  // edit task listener
   const todoItemText = todoItem.querySelector(".todoItem-text")
-  // todoItemText.addEventListener('input', )
+  // todoItemText.addEventListener('click', () => editTask(task) )
+
+  todoItemText.addEventListener('input', (e) => {
+
+    let editedTask = todoItemText.innerText.trim() ;
+    editTask(task, editedTask, e, todoItemText);
+  });
+
   return todoItem
 }
 
@@ -93,10 +103,8 @@ function pushToLocalstorage (task) {
   if (!storage) {
     storage = []
   }
-  console.log(task)
   storage.push(task)
   localStorage.setItem("todoList", JSON.stringify(storage))
-  console.log(storage)
 }
 
 function completeTask(e) {
@@ -118,7 +126,6 @@ function completeTask(e) {
       todo.classList.toggle('completed');
       const submitBtn = todo.querySelector('.todoItem__submit_button');
       submitBtn.classList.toggle('completed-btn');
-      console.log(storage)
       // Update the counter and perform any other necessary actions
       counterChange();
     }
@@ -147,7 +154,6 @@ function counterChange() {
 function deleteTodoDiv(todo) {
   const todoTextElement = todo.querySelector('.todoItem-text')
   let todoText = todoTextElement ? todoTextElement.innerText : null;
-  console.log(todoText)
   deleteTaskFromLocalstorage(todoText)
   todo.classList.remove("show")
   todo.classList.add("fade")
@@ -170,14 +176,30 @@ function deleteTask(e) {
 
 
 
-function editTaskInLocalstorage (task) {
+function editTask (task, editedTask, e, todoItemText) {
   let storage = JSON.parse(localStorage.getItem("todoList")) || [];
-  let index = storage.indexOf(task)
-  // if (index !== -1) {
-  //   storage[i] = 
-  // }
+  let index = storage.findIndex(item => item.text === task.text);
 
-  localStorage.setItem("todoList", JSON.stringify(storage))
+  storage[index].text = editedTask
+  function saveChanges() {
+    localStorage.setItem("todoList", JSON.stringify(storage));
+    document.removeEventListener('click', saveChanges);
+    document.removeEventListener('keypress', handleKeyPress);
+    todoItemText.removeEventListener('blur', saveChanges);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      saveChanges();
+    } 
+  };
+
+  // Attach the event listeners
+  document.addEventListener('click', saveChanges);
+  document.addEventListener('keypress', handleKeyPress);
+  todoItemText.addEventListener('blur', saveChanges);
+
 }
 
 function deleteTaskFromLocalstorage (todoText) {
