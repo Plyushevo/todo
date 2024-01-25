@@ -32,7 +32,7 @@ function buildTodoOnLoad () {
       const task = new Task(todoText, completeStatus)
       const todoItem = createTodoItem(element);
       todoList.appendChild(todoItem)
-
+      counterChange()
     });
   } else {
     hideFooter()
@@ -179,13 +179,18 @@ function deleteTask(e) {
 function editTask (task, editedTask, e, todoItemText) {
   let storage = JSON.parse(localStorage.getItem("todoList")) || [];
   let index = storage.findIndex(item => item.text === task.text);
+  console.log(editedTask)
+  console.log(index)
 
   storage[index].text = editedTask
+  console.log(storage[index])
+  
   function saveChanges() {
     localStorage.setItem("todoList", JSON.stringify(storage));
     document.removeEventListener('click', saveChanges);
     document.removeEventListener('keypress', handleKeyPress);
     todoItemText.removeEventListener('blur', saveChanges);
+    todoItemText.blur()
   };
 
   const handleKeyPress = (e) => {
